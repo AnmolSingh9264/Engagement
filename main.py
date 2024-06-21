@@ -18,7 +18,7 @@ path = str(os.path.dirname(os.path.abspath(__file__)))
 print(path)
 driver = None
 optionss = Options()
-os.chmod(path+'/126/chromedriver', 0755)
+os.chmod(path+'/126/chromedriver', 755)
 try:
     driver = webdriver.Chrome(service=Service(executable_path=path+'/126/chromedriver.exe'), options=optionss)
 except FileNotFoundError:
