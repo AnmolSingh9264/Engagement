@@ -26,7 +26,7 @@ except FileNotFoundError:
 except selenium.common.WebDriverException:
     print("chrome driver exception")
     chromedriver.install(path=path)
-    driver = webdriver.Chrome(service=Service(executable_path=path+/126/chromedriver.exe'), options=optionss)
+    driver = webdriver.Chrome(service=Service(executable_path=path+'/126/chromedriver.exe'), options=optionss)
 
 optionss.add_argument('--headless')
 def login(id, password):
