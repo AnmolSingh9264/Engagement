@@ -19,14 +19,14 @@ print(path)
 driver = None
 optionss = Options()
 try:
-    driver = webdriver.Chrome(service=Service(executable_path=path+'\\126\\chromedriver.exe'), options=optionss)
+    driver = webdriver.Chrome(service=Service(executable_path=path+'/126/chromedriver.exe'), options=optionss)
 except FileNotFoundError:
     chromedriver.install(path=path)
-    driver = webdriver.Chrome(service=Service(executable_path=path + '\\126\\chromedriver.exe'), options=optionss)
+    driver = webdriver.Chrome(service=Service(executable_path=path + '/126/chromedriver.exe'), options=optionss)
 except selenium.common.WebDriverException:
     print("chrome driver exception")
     chromedriver.install(path=path)
-    driver = webdriver.Chrome(service=Service(executable_path=path+'\\126\\chromedriver.exe'), options=optionss)
+    driver = webdriver.Chrome(service=Service(executable_path=path+/126/chromedriver.exe'), options=optionss)
 
 optionss.add_argument('--headless')
 def login(id, password):
@@ -38,9 +38,9 @@ def login(id, password):
 
 driver.get("https://twitter.com/login?lang=en")
 for button in WebDriverWait(driver, 50).until(EC.visibility_of_all_elements_located((By.TAG_NAME, 'html'))):
-    file = open(path+'\\accounts.txt', 'r')
+    file = open(path+'/accounts.txt', 'r')
     try:
-        with open(path + "\\cookies.pkl", "rb") as file:
+        with open(path + "/cookies.pkl", "rb") as file:
             pass
     except FileNotFoundError:
         login(file.readline().strip(), file.readline().strip())
@@ -48,7 +48,7 @@ for button in WebDriverWait(driver, 50).until(EC.visibility_of_all_elements_loca
 for button in WebDriverWait(driver, 50).until(EC.visibility_of_all_elements_located((By.TAG_NAME, 'html'))):
 
     try:
-        with open(path+"\\cookies.pkl", "rb") as file:
+        with open(path+"/cookies.pkl", "rb") as file:
             cookies = pickle.load(file)
             for cookie in cookies:
                 driver.add_cookie(cookie)
@@ -56,9 +56,9 @@ for button in WebDriverWait(driver, 50).until(EC.visibility_of_all_elements_loca
     except FileNotFoundError:
         time.sleep(60)
         cookies = driver.get_cookies()
-        with open(path+"\\cookies.pkl", "wb") as file:
+        with open(path+"/cookies.pkl", "wb") as file:
             pickle.dump(cookies, file)
-        with open(path+"\\cookies.pkl", "rb") as file:
+        with open(path+"/cookies.pkl", "rb") as file:
             cookies = pickle.load(file)
             for cookie in cookies:
                 driver.add_cookie(cookie)
