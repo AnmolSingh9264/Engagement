@@ -18,16 +18,26 @@ path = str(os.path.dirname(os.path.abspath(__file__)))
 print(path)
 driver = None
 optionss = Options()
-os.chmod(path+'/126/chromedriver.exe', 755)
+sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless') # this is must
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chromedriver_autoinstaller.install()
+
+
 try:
-    driver = webdriver.Chrome(service=Service(executable_path=path+'/126/chromedriver.exe'), options=optionss)
+    driver = webdriver.Chrome(options=chrome_options)
+    #driver = webdriver.Chrome(service=Service(executable_path=path+'/126/chromedriver.exe'), options=optionss)
 except FileNotFoundError:
-    chromedriver.install(path=path)
-    driver = webdriver.Chrome(service=Service(executable_path=path + '/126/chromedriver.exe'), options=optionss)
+    driver = webdriver.Chrome(options=chrome_options)
+    #chromedriver.install(path=path)
+    #driver = webdriver.Chrome(service=Service(executable_path=path + '/126/chromedriver.exe'), options=optionss)
 except selenium.common.WebDriverException:
     print("chrome driver exception")
-    chromedriver.install(path=path)
-    driver = webdriver.Chrome(service=Service(executable_path=path+'/126/chromedriver.exe'), options=optionss)
+    driver = webdriver.Chrome(options=chrome_options)
+    #chromedriver.install(path=path)
+    #driver = webdriver.Chrome(service=Service(executable_path=path+'/126/chromedriver.exe'), options=optionss)
 
 optionss.add_argument('--headless')
 def login(id, password):
