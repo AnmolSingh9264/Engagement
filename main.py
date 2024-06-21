@@ -17,17 +17,18 @@ app = Flask(__name__)
 path = str(os.path.dirname(os.path.abspath(__file__)))
 print(path)
 driver = None
+optionss = Options()
 try:
-    driver = webdriver.Chrome(service=Service(executable_path=path+'\\126\\chromedriver.exe'), options=Options())
+    driver = webdriver.Chrome(service=Service(executable_path=path+'\\126\\chromedriver.exe'), options=optionss)
 except FileNotFoundError:
     chromedriver.install(path=path)
-    driver = webdriver.Chrome(service=Service(executable_path=path + '\\126\\chromedriver.exe'), options=Options())
+    driver = webdriver.Chrome(service=Service(executable_path=path + '\\126\\chromedriver.exe'), options=optionss)
 except selenium.common.WebDriverException:
     print("chrome driver exception")
     chromedriver.install(path=path)
-    driver = webdriver.Chrome(service=Service(executable_path=path+'\\126\\chromedriver.exe'), options=Options())
+    driver = webdriver.Chrome(service=Service(executable_path=path+'\\126\\chromedriver.exe'), options=optionss)
 
-
+optionss.add_argument('--headless')
 def login(id, password):
     controller.auth(id, driver, "text")
     controller.login(driver, "//*[contains(text(), 'Next')]")
