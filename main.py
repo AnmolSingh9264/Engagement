@@ -18,7 +18,7 @@ path = str(os.path.dirname(os.path.abspath(__file__)))
 print(path)
 driver = None
 optionss = Options()
-sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+#sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless') # this is must
 chrome_options.add_argument('--no-sandbox')
