@@ -300,4 +300,4 @@ def refresh():
     return "Refreshed successfully: "+driver.current_url
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host="0.0.0.0",port=9708)
