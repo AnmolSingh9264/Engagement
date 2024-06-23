@@ -16,7 +16,7 @@ def load_cookies_from_pkl(pkl_file):
 
 async def run(playwright):
     global url
-    browser = await playwright.chromium.launch(headless=False)
+    browser = await playwright.chromium.launch(headless=True)
     context = await browser.new_context()
     page = await context.new_page()
     await page.goto('https://twitter.com')
