@@ -49,10 +49,14 @@ async def main():
         await run(playwright)
 
 
-@app.route('/')
-def refresh():
+@app.route('/run')
+def start():
     asyncio.run(main())
     return "Refreshed successfully: "+url
+
+@app.route('/')
+def refresh():
+    return "Refreshed successfully: "
 
 
 #asyncio.run(main())
