@@ -26,7 +26,7 @@ async def run(playwright):
     global like
     global comment
     global Post
-    browser = await playwright.chromium.launch(headless=False,
+    browser = await playwright.chromium.launch(headless=True,
     args = [
         '--disable-gpu',  # Disable GPU to save resources
         '--no-sandbox',  # No sandbox mode for faster launch
