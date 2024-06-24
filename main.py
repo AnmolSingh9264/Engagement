@@ -43,7 +43,7 @@ async def run(playwright):
             for cookie in cookies:
                 await page.context.add_cookies([cookie])
         await page.goto("https://twitter.com/home")
-    await page.fill("//*[@data-testid=\"tweetTextarea_0\"]",'hello')
+    #await page.fill("//*[@data-testid=\"tweetTextarea_0\"]",'hello')
     #input("Press Enter to close the browser...")
     #await browser.close()
 
