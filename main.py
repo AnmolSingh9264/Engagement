@@ -1,12 +1,17 @@
 import asyncio
 import pickle
 import time
-from flask import Flask
+from flask import Flask, request
+from threading import Thread
 from playwright.async_api import async_playwright
 
 app = Flask(__name__)
 url = ""
-
+Post = None
+tweetUrl = None
+retweet = None
+like = None
+comment = None
 
 def load_cookies_from_pkl(pkl_file):
     with open(pkl_file, 'rb') as f:
@@ -16,11 +21,18 @@ def load_cookies_from_pkl(pkl_file):
 
 async def run(playwright):
     global url
-    browser = await playwright.chromium.launch(headless=True, args = [
+    global tweetUrl
+    global retweet
+    global like
+    global comment
+    global Post
+    browser = await playwright.chromium.launch(headless=False,
+    args = [
         '--disable-gpu',  # Disable GPU to save resources
         '--no-sandbox',  # No sandbox mode for faster launch
         '--disable-dev-shm-usage'  # Overcome limited resource problems
-    ])
+    ]
+    )
     context = await browser.new_context()
     page = await context.new_page()
     await page.goto('https://twitter.com')
@@ -43,7 +55,19 @@ async def run(playwright):
             for cookie in cookies:
                 await page.context.add_cookies([cookie])
         await page.goto("https://twitter.com/home")
-    #await page.fill("//*[@data-testid=\"tweetTextarea_0\"]",'hello')
+    if Post != None:
+        await page.fill("//*[@data-testid=\"tweetTextarea_0\"]", Post)
+        await page.click("//*[text()='Post']")
+    if tweetUrl != None:
+        await page.goto(tweetUrl)
+        if retweet != None:
+            await page.click("//*[@data-testid=\"retweet\"]")
+            await page.click("//*[text()='Repost']")
+        if like != None:
+            await page.click("//*[@data-testid=\"like\"]")
+        if comment != None:
+            await page.fill("//*[@data-testid=\"tweetTextarea_0\"]",comment)
+            await page.click("//*[text()='Reply']")
     #input("Press Enter to close the browser...")
     #await browser.close()
 
@@ -52,18 +76,37 @@ async def main():
     async with async_playwright() as playwright:
         await run(playwright)
 
-asyncio.run(main())
-
-
-@app.route('/run')
-def start():
-    
-    return "Refreshed successfully: "+url
+def execute():
+    asyncio.run(main())
 
 @app.route('/')
 def refresh():
-    return "Refreshed successfully: "
+    x = Thread(target=execute)
+    x.start()
+    return "Refreshed successfully: "+url
 
+@app.route('/post')
+def post():
+    global Post
+    Post = request.args.get('msg')
+    x = Thread(target=execute)
+    x.start()
+    return "Refreshed successfully: "+url
+
+
+@app.route('/all')
+def allActions():
+    global retweet
+    global like
+    global comment
+    global tweetUrl
+    tweetUrl = request.args.get('url')
+    retweet =request.args.get('r')
+    like = request.args.get('l')
+    comment = request.args.get('msg')
+    x = Thread(target=execute)
+    x.start()
+    return "Refreshed successfully: "+url
 
 #asyncio.run(main())
 
