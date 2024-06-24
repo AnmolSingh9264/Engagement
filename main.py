@@ -34,6 +34,7 @@ async def run(playwright):
     ]
     )
     context = await browser.new_context()
+    context.set_default_timeout(120000)
     page = await context.new_page()
     await page.goto('https://twitter.com')
 
