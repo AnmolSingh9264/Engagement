@@ -52,10 +52,12 @@ async def main():
     async with async_playwright() as playwright:
         await run(playwright)
 
+asyncio.run(main())
+
 
 @app.route('/run')
 def start():
-    asyncio.run(main())
+    
     return "Refreshed successfully: "+url
 
 @app.route('/')
