@@ -4,6 +4,7 @@ import time
 from flask import Flask, request
 from threading import Thread
 from playwright.async_api import async_playwright
+import random
 
 app = Flask(__name__)
 url = ""
@@ -12,6 +13,12 @@ tweetUrl = None
 retweet = None
 like = None
 comment = None
+
+useragent = ["Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36",
+             "Mozilla/5.0 (Linux; Android 12; moto g pure) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36",
+             "Mozilla/5.0 (Linux; Android 12; moto g stylus 5G) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36v",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246",
+             "Mozilla/5.0 (Linux; Android 12; Redmi Note 9 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36"]
 
 def load_cookies_from_pkl(pkl_file):
     with open(pkl_file, 'rb') as f:
@@ -33,7 +40,7 @@ async def run(playwright):
         '--disable-dev-shm-usage'  # Overcome limited resource problems
     ]
     )
-    context = await browser.new_context()
+    context = await browser.new_context(user_agent= useragent[random.randint(0, 4)])
     context.set_default_timeout(120000)
     page = await context.new_page()
     await page.goto('https://twitter.com')
